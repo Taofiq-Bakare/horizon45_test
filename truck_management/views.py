@@ -10,11 +10,15 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 @api_view(["GET", "POST"])
-def driver_create(request):
+def driver_create(request: Request):
     """
     Create driver.
     """
     if request.method == 'POST':
+        #check if the driver already exists.
+        if Driver.objects.filter(email=request.data.get('email')).exists():
+            return Response({'error': 'Driver already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = DriverSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
