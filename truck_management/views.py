@@ -15,7 +15,24 @@ def driver_list_create(request: Request):
     Create driver.
     """
     if request.method == 'GET':
+        # retrieve filters for email, mobile_number, language
+        ##todo assigned truck number plate.
+
+        email = request.query_params.get('email')
+        mobile_number = request.query_params.get('mobile_number')
+        language = request.query_params.get('language')
+
+        # get all existing drivers
         existing_drivers = Driver.objects.all()
+
+        # apply filters
+        if email:
+            existing_drivers = existing_drivers.filter(email=email)
+        if mobile_number:
+            existing_drivers = existing_drivers.filter(mobile_number=mobile_number)
+        if language:
+            existing_drivers = existing_drivers.filter(language=language)
+
         serializer = DriverSerializer(existing_drivers, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
