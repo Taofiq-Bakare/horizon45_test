@@ -35,6 +35,9 @@ def driver_list_create(request: Request):
         mobile_number = request.query_params.get('mobile_number')
         language = request.query_params.get('language')
 
+        # get the plate number
+        number_plate = request.query_params.get('number_plate')
+
         # get all existing drivers
         existing_drivers = Driver.objects.all()
 
@@ -45,6 +48,8 @@ def driver_list_create(request: Request):
             existing_drivers = existing_drivers.filter(mobile_number=mobile_number)
         if language:
             existing_drivers = existing_drivers.filter(language=language)
+        if number_plate:
+            existing_drivers = existing_drivers.filter(assigned_truck__number_plate=number_plate)
 
         serializer = DriverSerializer(existing_drivers, many=True)
         return Response(serializer.data)
