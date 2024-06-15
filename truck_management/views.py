@@ -25,44 +25,38 @@ def driver_details(request: Request, driver_id: int):
 @api_view(["GET", "POST"])
 def driver_list_create(request: Request):
     """
-    Create driver.
+    List and create drivers.
     """
     if request.method == 'GET':
-        # retrieve filters for email, mobile_number, language
+        # Retrieve filters from query parameters
+        filters = {
+            'email': request.query_params.get('email'),
+            'mobile_number': request.query_params.get('mobile_number'),
+            'language': request.query_params.get('language'),
+            'assigned_truck__number_plate': request.query_params.get('number_plate')
+        }
 
-        email = request.query_params.get('email')
-        mobile_number = request.query_params.get('mobile_number')
-        language = request.query_params.get('language')
+        # Remove None values from filters
+        filters = {k: v for k, v in filters.items() if v is not None}
 
-        # get the plate number
-        number_plate = request.query_params.get('number_plate')
+        # Get filtered drivers
+        existing_drivers = Driver.objects.filter(**filters)
 
-        # get all existing drivers
-        existing_drivers = Driver.objects.all()
-
-        # apply filters
-        if email:
-            existing_drivers = existing_drivers.filter(email=email)
-        if mobile_number:
-            existing_drivers = existing_drivers.filter(mobile_number=mobile_number)
-        if language:
-            existing_drivers = existing_drivers.filter(language=language)
-        if number_plate:
-            existing_drivers = existing_drivers.filter(assigned_truck__number_plate=number_plate)
-
+        # Serialize and return the data
         serializer = DriverSerializer(existing_drivers, many=True)
         return Response(serializer.data)
+
     elif request.method == 'POST':
-        # check if the driver already exists.
+        # Check if the driver already exists
         if Driver.objects.filter(email=request.data.get('email')).exists():
             return Response({'error': 'Driver already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Deserialize and save the new driver
         serializer = DriverSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(["POST"])
 def driver_bulk_create(request: Request):
