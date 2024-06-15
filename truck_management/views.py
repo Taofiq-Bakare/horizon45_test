@@ -1,25 +1,22 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 from .models import Driver
 from .serializers import DriverSerializer
 from rest_framework.request import Request
-from django.views.decorators.csrf import csrf_exempt
+from .repository import DriverRepository
 
 
 # Create your views here.
 
 @api_view(["GET"])
 def driver_details(request: Request, driver_id: int):
-    try:
-        driver = Driver.objects.get(pk=driver_id)
-    except Driver.DoesNotExist:
+    driver = DriverRepository.get_driver_bi_id(driver_id=driver_id)
+    if not driver:
         return Response(data=f"There is no driver with the id_no= {driver_id}", status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "GET":
-        serializer = DriverSerializer(driver)
-        return Response(serializer.data)
+    serializer = DriverSerializer(driver)
+    return Response(serializer.data)
 
 
 @api_view(["GET", "POST"])
