@@ -29,7 +29,6 @@ def driver_list_create(request: Request):
     """
     if request.method == 'GET':
         # retrieve filters for email, mobile_number, language
-        ##todo assigned truck number plate.
 
         email = request.query_params.get('email')
         mobile_number = request.query_params.get('mobile_number')
@@ -53,7 +52,7 @@ def driver_list_create(request: Request):
 
         serializer = DriverSerializer(existing_drivers, many=True)
         return Response(serializer.data)
-    if request.method == 'POST':
+    elif request.method == 'POST':
         # check if the driver already exists.
         if Driver.objects.filter(email=request.data.get('email')).exists():
             return Response({'error': 'Driver already exists'}, status=status.HTTP_400_BAD_REQUEST)
@@ -63,3 +62,15 @@ def driver_list_create(request: Request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def driver_bulk_create(request: Request):
+    drivers_data = request.data
+    created_drivers = []
+    for driver in drivers_data:
+        serializer = DriverSerializer(data=driver)
+        if serializer.is_valid():
+            serializer.save()
+            created_drivers.append(serializer.data)
+    return Response(created_drivers,status=status.HTTP_201_CREATED)
