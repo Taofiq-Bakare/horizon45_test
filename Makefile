@@ -3,3 +3,7 @@ make_migration:
 
 apply_migration:
 	python manage.py migrate
+
+test_app:
+	python manage.py test
+

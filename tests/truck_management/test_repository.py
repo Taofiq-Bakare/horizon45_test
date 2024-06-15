@@ -1,12 +1,16 @@
 from django.test import TestCase
 from truck_management.repository import DriverRepository
 from truck_management.models import Driver, Truck
-
+import uuid
 
 class DriverRepositoryTestCase(TestCase):
 
     def setUp(self):
-        self.truck = Truck.objects.create(number_plate="ABC123", registration_number="REG123")
+        self.truck1 = Truck.objects.create(number_plate="ABC123", registration_number="REG123")
+        self.truck2 = Truck.objects.create(number_plate=str(uuid.uuid4())[:8], registration_number=str(uuid.uuid4())[:8])
+        self.truck3 = Truck.objects.create(number_plate=str(uuid.uuid4())[:8], registration_number=str(uuid.uuid4())[:8])
+        self.truck4 = Truck.objects.create(number_plate=str(uuid.uuid4())[:8], registration_number=str(uuid.uuid4())[:8])
+
         self.driver1 = Driver.objects.create(
             email="test1@example.com",
             name="Test Driver 1",
@@ -14,7 +18,7 @@ class DriverRepositoryTestCase(TestCase):
             city="CityA",
             district="DistrictA",
             language="English",
-            assigned_truck=self.truck
+            assigned_truck=self.truck1
         )
         self.driver2 = Driver.objects.create(
             email="test2@example.com",
@@ -26,9 +30,8 @@ class DriverRepositoryTestCase(TestCase):
         )
 
     def tearDown(self):
-        self.driver1.delete()
-        self.driver2.delete()
-        self.truck.delete()
+        Driver.objects.all().delete()
+        Truck.objects.all().delete()
 
     def test_get_driver_by_id(self):
         driver = DriverRepository.get_driver_by_id(self.driver1.id)
@@ -48,23 +51,24 @@ class DriverRepositoryTestCase(TestCase):
         drivers = DriverRepository.get_all_drivers(filters)
         self.assertEqual(len(drivers), 1)
         self.assertEqual(drivers[0].email, 'test1@example.com')
+
     def test_create_driver(self):
         data = {
-            "email": "test3@example.com",
+            "email": f"test3_{uuid.uuid4()}@example.com",
             "name": "Test Driver 3",
             "mobile_number": 1231231234,
             "city": "CityC",
             "district": "DistrictC",
             "language": "French",
             "assigned_truck": {
-                "number_plate": "XXWW12345",
-                "registration_number": "TREA2365"
+                "number_plate": str(uuid.uuid4())[:8],
+                "registration_number": str(uuid.uuid4())[:8]
             }
         }
         driver_data, errors = DriverRepository.create_driver(data)
         self.assertIsNone(errors)
         self.assertIsNotNone(driver_data)
-        self.assertEqual(driver_data['email'], "test3@example.com")
+        self.assertEqual(driver_data['email'], data["email"])
 
     def test_create_driver_with_existing_email(self):
         data = {
@@ -82,31 +86,31 @@ class DriverRepositoryTestCase(TestCase):
     def test_create_bulk_drivers(self):
         drivers_data = [
             {
-                "email": "bulk1@example.com",
+                "email": f"bulk1_{uuid.uuid4()}@example.com",
                 "name": "Bulk Driver 1",
                 "mobile_number": 1111111111,
                 "city": "CityE",
                 "district": "DistrictE",
                 "language": "Italian",
                 "assigned_truck": {
-                    "number_plate": "WWRT6789",
-                    "registration_number": "ASDF3434"
+                    "number_plate": str(uuid.uuid4())[:8],
+                    "registration_number": str(uuid.uuid4())[:8]
                 }
             },
             {
-                "email": "bulk2@example.com",
+                "email": f"bulk2_{uuid.uuid4()}@example.com",
                 "name": "Bulk Driver 2",
                 "mobile_number": 2222222222,
                 "city": "CityF",
                 "district": "DistrictF",
                 "language": "Chinese",
                 "assigned_truck": {
-                    "number_plate": "WWE6784",
-                    "registration_number": "RRET2387"
+                    "number_plate": str(uuid.uuid4())[:8],
+                    "registration_number": str(uuid.uuid4())[:8]
                 }
             }
         ]
         created_drivers = DriverRepository.create_bulk_drivers(drivers_data)
         self.assertEqual(len(created_drivers), 2)
-        self.assertEqual(created_drivers[0]['email'], "bulk1@example.com")
-        self.assertEqual(created_drivers[1]['email'], "bulk2@example.com")
+        self.assertEqual(created_drivers[0]['email'], drivers_data[0]["email"])
+        self.assertEqual(created_drivers[1]['email'], drivers_data[1]["email"])
