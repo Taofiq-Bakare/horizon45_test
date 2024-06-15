@@ -11,7 +11,7 @@ from .repository import DriverRepository
 
 @api_view(["GET"])
 def driver_details(request: Request, driver_id: int):
-    driver = DriverRepository.get_driver_bi_id(driver_id=driver_id)
+    driver = DriverRepository.get_driver_by_id(driver_id=driver_id)
     if not driver:
         return Response(data=f"There is no driver with the id_no= {driver_id}", status=status.HTTP_404_NOT_FOUND)
 
