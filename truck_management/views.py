@@ -53,11 +53,6 @@ def driver_list_create(request: Request):
 
 @api_view(["POST"])
 def driver_bulk_create(request: Request):
-    drivers_data = request.data
-    created_drivers = []
-    for driver in drivers_data:
-        serializer = DriverSerializer(data=driver)
-        if serializer.is_valid():
-            serializer.save()
-            created_drivers.append(serializer.data)
-    return Response(created_drivers, status=status.HTTP_201_CREATED)
+    created_drivers = DriverRepository.create_bulk_drivers(request.data)
+    return Response(created_drivers,status=status.HTTP_201_CREATED)
+

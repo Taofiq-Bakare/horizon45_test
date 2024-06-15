@@ -15,6 +15,7 @@ class DriverRepository:
         if filters is None:
             filters = {}
         return Driver.objects.filter(**filters)
+
     @staticmethod
     def create_driver(data):
         serializer = DriverSerializer(data=data)
@@ -22,3 +23,13 @@ class DriverRepository:
             serializer.save()
             return serializer.data, None
         return None, serializer.errors
+
+    @staticmethod
+    def create_bulk_drivers(drivers_data):
+        created_drivers = []
+        for driver in drivers_data:
+            serializer = DriverSerializer(data=driver)
+            if serializer.is_valid():
+                serializer.save()
+                created_drivers.append(serializer.data)
+        return created_drivers
