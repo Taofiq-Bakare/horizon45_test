@@ -15,7 +15,7 @@ def driver_details(request: Request, driver_id: int):
     try:
         driver = Driver.objects.get(pk=driver_id)
     except Driver.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(data=f"There is no driver with the id_no= {driver_id}", status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         serializer = DriverSerializer(driver)
