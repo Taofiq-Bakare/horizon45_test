@@ -15,7 +15,7 @@ def driver_create(request: Request):
     Create driver.
     """
     if request.method == 'POST':
-        #check if the driver already exists.
+        # check if the driver already exists.
         if Driver.objects.filter(email=request.data.get('email')).exists():
             return Response({'error': 'Driver already exists'}, status=status.HTTP_400_BAD_REQUEST)
 

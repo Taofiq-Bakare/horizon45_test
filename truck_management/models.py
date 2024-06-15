@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Driver(models.Model):
-    email = models.EmailField(primary_key=True)
+    email = models.EmailField(unique=True)
     name = models.CharField(max_length=100, null=False)
     mobile_number = models.PositiveSmallIntegerField()
     city = models.CharField(max_length=100,)
