@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "truck_management.app.TruckManagementConfig",
+    "truck_management.apps.TruckManagementConfig",
 ]
 
 MIDDLEWARE = [
