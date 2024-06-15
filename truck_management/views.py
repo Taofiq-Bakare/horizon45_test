@@ -9,6 +9,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
+
+@api_view(["GET"])
+def driver_details(request: Request, driver_id: int):
+    try:
+        driver = Driver.objects.get(pk=driver_id)
+    except Driver.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = DriverSerializer(driver)
+        return Response(serializer.data)
+
+
 @api_view(["GET", "POST"])
 def driver_list_create(request: Request):
     """
