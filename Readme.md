@@ -15,7 +15,7 @@ It includes the necessary models, API endpoints, and tests.
 Clone the repo
 
 ```bash
-$ git clone https://github.com/your-username/truck-management.git
+$ git clone git@github.com:Taofiq-Bakare/horizon45_test.git
 $ cd truck-management
 
 ```
