@@ -54,5 +54,7 @@ def driver_list_create(request: Request):
 @api_view(["POST"])
 def driver_bulk_create(request: Request):
     created_drivers = DriverRepository.create_bulk_drivers(request.data)
-    return Response(created_drivers,status=status.HTTP_201_CREATED)
-
+    if len(created_drivers) == len(request.data):
+        return Response(created_drivers, status=status.HTTP_201_CREATED)
+    else:
+        return Response(data="Drivers not created",status=status.HTTP_400_BAD_REQUEST)

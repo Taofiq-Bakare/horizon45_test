@@ -1,6 +1,7 @@
 from .models import Driver
 from .serializers import DriverSerializer
-
+from django.db import transaction
+from rest_framework.exceptions import ValidationError
 
 class DriverRepository:
     @staticmethod
@@ -27,9 +28,21 @@ class DriverRepository:
     @staticmethod
     def create_bulk_drivers(drivers_data):
         created_drivers = []
-        for driver in drivers_data:
-            serializer = DriverSerializer(data=driver)
-            if serializer.is_valid():
-                serializer.save()
-                created_drivers.append(serializer.data)
+        errors = []
+
+        with transaction.atomic():
+            for driver_data in drivers_data:
+                serializer = DriverSerializer(data=driver_data)
+                if serializer.is_valid():
+                    created_driver = serializer.save()
+                    created_drivers.append(DriverSerializer(created_driver).data)
+                else:
+                    errors.append(serializer.errors)
+
+            if errors:
+                # If there are errors, roll back the transaction
+                raise ValidationError(errors)
+
         return created_drivers
+
+

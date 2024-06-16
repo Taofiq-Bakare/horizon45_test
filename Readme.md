@@ -82,3 +82,15 @@
 ]
 
 ```
+
+### Migrated to a Postgres DB
+
+## Starting the application
+
+Assuming the database is set up correctly using the .env.example, run the following command to get the application started.
+
+```bash
+$ make setup
+```
+
+The command above will install the needed packages, make the initial migration and start the application on the local server.
