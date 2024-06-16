@@ -20,10 +20,6 @@ apply_migrations: migrations migrate
 test_app:
 	$(PIPENV) run python manage.py test
 
-# Run the development server
-run: apply_migrations
-	$(PIPENV) run python manage.py runserver
-
 # Clean up .pyc files
 clean:
 	find . -name "*.pyc" -exec rm -f {} \;
@@ -35,3 +31,10 @@ clean_env:
 # Start a shell in the virtual environment
 shell:
 	$(PIPENV) shell
+
+# Set up the environment, make and apply migrations, and run the development server
+setup: install apply_migrations run
+
+# Run the development server
+run:
+	$(PIPENV) run python manage.py runserver
