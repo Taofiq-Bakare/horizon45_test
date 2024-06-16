@@ -1,7 +1,7 @@
-make_migration:
+migrations:
 	python manage.py makemigrations
 
-apply_migration:
+migrate:
 	python manage.py migrate
 
 test_app:

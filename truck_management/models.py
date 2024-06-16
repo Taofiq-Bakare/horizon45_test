@@ -12,7 +12,7 @@ class Truck(models.Model):
 class Driver(models.Model):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100, null=False)
-    mobile_number = models.PositiveSmallIntegerField()
+    mobile_number = models.CharField(max_length=18)
     city = models.CharField(max_length=100, )
     district = models.CharField(max_length=100, )
     language = models.CharField(max_length=20)
