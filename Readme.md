@@ -41,6 +41,11 @@ Install the required packages using Pipenv:
 ```bash
 $ pipenv install
 ```
+Run the command below to activate the environment.
+
+```bash
+$ pipenv shell
+```
 
 ## Migrate the Database
 
