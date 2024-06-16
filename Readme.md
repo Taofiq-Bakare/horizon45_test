@@ -47,14 +47,20 @@ Run the command below to activate the environment.
 $ pipenv shell
 ```
 
+Run the command below to activate the environment.
+
+```bash
+$ pipenv shell
+```
+
 ## Migrate the Database
 
 Run the following commands to make and apply migrations:
 
 ```bash
 
-$ pipenv run python manage.py makemigrations
-$ pipenv run python manage.py migrate
+$ python manage.py makemigrations
+$ python manage.py migrate
 
 ```
 
@@ -63,7 +69,7 @@ $ pipenv run python manage.py migrate
 Start the Django development server:
 
 ```bash
-$ pipenv run python manage.py runserver
+$ python manage.py runserver
 ```
 
 ## Running Tests
@@ -71,7 +77,7 @@ $ pipenv run python manage.py runserver
 To run the unit tests for the application, use the following command:
 
 ```bash
-$ pipenv run python manage.py test
+$ python manage.py test
 ```
 
 ## API Endpoints
