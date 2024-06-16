@@ -1,70 +1,131 @@
-## Tasks
+# Truck Management Application
 
-### Required
+## Overview
+This project is a Django application for managing drivers and their assigned trucks. 
+It includes the necessary models, API endpoints, and tests.
 
-- [x] Create a GitHub repo and invite sedia.jaiteh@horizons45.com. Your Github repo should contain the whole project with the truck application and basic server settings. Make sure the local server can be spun up without any errors. (You don't need to commit the local database .sqlite to the repo).
-- [x] Design one or more models to store driver information in the database. (Note: You may need multiple models and use database relationships such as one-to-one, one-to-many, etc.). Each driver has the following fields or attributes:
+## Requirements
 
-    - [x] name
-    - [x] mobile_number
-    - [x] email
-    - [x] city
-    - [x] district
-    - [x] language
-    - [x] an_asigned_truck (each truck has a unique number_plate and a unique registration_number)
+* Python 3.x
+* PostgreSQL
+* Pipenv
 
-- [x] API endpoints and expected responses:
-  - [x] /domain/driver
-    * Return a list of available drivers.
-    * Allow filtering using a driver's email, mobile_number, language, and assigned truck number_plate.
-  - [x] /domain/driver/id
-    * Return a single driver
-  - [x] /domain/driver
-    * create a single driver
+## Setup
 
+Clone the repo
 
+```bash
+$ git clone https://github.com/your-username/truck-management.git
+$ cd truck-management
 
-### Extras
+```
 
-- [x] Creating bulk drivers
-- [x] Unit tests
+## Create a .env File
 
-## Example data
+Create a `.env` file in the root of your project directory and add the following environment variables:
 
-### Create a single driver
+```bash
+DB_NAME=your_db_name
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+DB_HOST=your_db_host
+DB_PORT=your_db_port
 
+```
+If PostgreSQL environment variables are not set, the application will default to using SQLite.
+
+## Install Dependencies
+
+Install the required packages using Pipenv:
+
+```bash
+$ pipenv install
+```
+
+## Migrate the Database
+
+Run the following commands to make and apply migrations:
+
+```bash
+
+$ pipenv run python manage.py makemigrations
+$ pipenv run python manage.py migrate
+
+```
+
+## Run the Server
+
+Start the Django development server:
+
+```bash
+$ pipenv run python manage.py runserver
+```
+
+## Running Tests
+
+To run the unit tests for the application, use the following command:
+
+```bash
+$ pipenv run python manage.py test
+```
+
+## API Endpoints
+
+List of Drivers
+
+    URL: /domain/driver
+    Method: GET
+    Description: Returns a list of available drivers.
+    Filters: You can filter drivers by email, mobile_number, language, and assigned truck number_plate.
+
+Get Driver by ID
+
+    URL: /domain/driver/<id>
+    Method: GET
+    Description: Returns a single driver by ID.
+
+Create a Single Driver
+
+    URL: /domain/driver
+    Method: POST
+    Description: Creates a single driver.
+    Request Body:
 
 ```json
 {
-        "email": "Jadfmes144@example.com",
-        "name": "James Smith",
-        "mobile_number": 12343244567890,
-        "city": "Example City",
-        "district": "Example District",
-        "language": "English",
-        "assigned_truck": {
-            "number_plate": "XYTdfT 11235",
-            "registration_number": "TdfRTEG5668"
-        }
+    "email": "Jadfmes144@example.com",
+    "name": "James Smith",
+    "mobile_number": 12343244567890,
+    "city": "Example City",
+    "district": "Example District",
+    "language": "English",
+    "assigned_truck": {
+        "number_plate": "XYTdfT 11235",
+        "registration_number": "TdfRTEG5668"
+    }
 }
 
 ```
 
-### Create bulk drivers
+Create Bulk Drivers
+
+    URL: /domain/driver/bulk
+    Method: POST
+    Description: Creates multiple drivers.
+    Request Body:
 
 ```json
-
 [
     {
-        "email": "Jadfmes144@example.com",
-        "name": "James Smith",
+        "email": "Jadfs144@example.com",
+        "name": "Ja Smith",
         "mobile_number": 12343244567890,
         "city": "Example City",
         "district": "Example District",
         "language": "English",
         "assigned_truck": {
-            "number_plate": "XYTdfT 11235",
-            "registration_number": "TdfRTEG5668"
+            "number_plate": "XYTdfT 112035",
+            "registration_number": "TdfRTEG56068"
         }
     },
     {
@@ -82,15 +143,3 @@
 ]
 
 ```
-
-### Migrated to a Postgres DB
-
-## Starting the application
-
-Assuming the database is set up correctly using the .env.example, run the following command to get the application started.
-
-```bash
-$ make setup
-```
-
-The command above will install the needed packages, make the initial migration and start the application on the local server.
