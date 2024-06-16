@@ -28,3 +28,57 @@
 
 - [x] Creating bulk drivers
 - [x] Unit tests
+
+## Example data
+
+### Create a single driver
+
+
+```json
+{
+        "email": "Jadfmes144@example.com",
+        "name": "James Smith",
+        "mobile_number": 12343244567890,
+        "city": "Example City",
+        "district": "Example District",
+        "language": "English",
+        "assigned_truck": {
+            "number_plate": "XYTdfT 11235",
+            "registration_number": "TdfRTEG5668"
+        }
+}
+
+```
+
+### Create bulk drivers
+
+```json
+
+[
+    {
+        "email": "Jadfmes144@example.com",
+        "name": "James Smith",
+        "mobile_number": 12343244567890,
+        "city": "Example City",
+        "district": "Example District",
+        "language": "English",
+        "assigned_truck": {
+            "number_plate": "XYTdfT 11235",
+            "registration_number": "TdfRTEG5668"
+        }
+    },
+    {
+        "email": "driverdf1454@example.com",
+        "name": "Peter A Smith",
+        "mobile_number": 12343244567890,
+        "city": "Example City",
+        "district": "Example District",
+        "language": "English",
+        "assigned_truck": {
+            "number_plate": "XXdfYT 11235",
+            "registration_number": "TRRdfEG5668"
+        }
+    }
+]
+
+```
