@@ -16,7 +16,7 @@ Clone the repo
 
 ```bash
 $ git clone git@github.com:Taofiq-Bakare/horizon45_test.git
-$ cd truck-management
+$ cd horizon45_test
 
 ```
 
@@ -47,12 +47,6 @@ Run the command below to activate the environment.
 $ pipenv shell
 ```
 
-Run the command below to activate the environment.
-
-```bash
-$ pipenv shell
-```
-
 ## Migrate the Database
 
 Run the following commands to make and apply migrations:
@@ -64,20 +58,21 @@ $ python manage.py migrate
 
 ```
 
-## Run the Server
-
-Start the Django development server:
-
-```bash
-$ python manage.py runserver
-```
-
 ## Running Tests
 
 To run the unit tests for the application, use the following command:
 
 ```bash
 $ python manage.py test
+```
+
+
+## Run the Server
+
+Start the Django development server:
+
+```bash
+$ python manage.py runserver
 ```
 
 ## API Endpoints
